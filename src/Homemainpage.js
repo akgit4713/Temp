@@ -12,18 +12,15 @@ import CategoryWiseVideo from "./CategoryWiseVideo";
 // THIS COMPONENT IS FOR SHOWING ALL VIDEOS UPLOADED BY ALL USERS
 
 const Homemainpage = (props) => {
-  const currUser = props.user.displayName;
-  const email = props.user.email;
-  const photoURL = props.user.photoURL;
+   const currUser = props.user;
 
   return (
     <>
       <Router>
-        {/* Navigation (Menu) Bar for this Page */}
         <Navbar
           collapseOnSelect
           expand="lg"
-          bg="light"
+          bg="dark"
           variant="light"
           fixed="top"
         >
@@ -62,11 +59,7 @@ const Homemainpage = (props) => {
               </Link>
             </Nav>
             <Nav>
-              <Link to="/">
-                <Button variant="warning" onClick={props.handleLogout}>
-                  LOG OUT
-                </Button>
-              </Link>
+            
 
               <Link
                 to="/user"
@@ -76,7 +69,6 @@ const Homemainpage = (props) => {
                   textDecoration: "none",
                 }}
               >
-                {currUser}
               </Link>
             </Nav>
           </Navbar.Collapse>
@@ -86,17 +78,15 @@ const Homemainpage = (props) => {
         {/* Changing page b/w all categories */}
         <Switch>
           <Route path="/" exact component={Allvideos} />
-          <Route
+          { <Route
             path="/user"
             render={(props) => (
               <Userpage
                 {...props}
                 name={currUser}
-                email={email}
-                photoURL={photoURL}
               />
             )}
-          />
+          /> }
           <Route
             path="/newsong"
             render={(props) => (

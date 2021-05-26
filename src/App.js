@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,Component,useEffect } from "react";
 import fire from "./fire";
 import firebase from "firebase";
 import "./App.css";
@@ -7,12 +7,17 @@ import { Navbar, Nav, Button } from "react-bootstrap";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import logo from "./Images/sound.jpeg";
 import Homelogin from "./Homelogin";
+import Login from "./Login";
 import Homemainpage from "./Homemainpage";
 import AboutUs from "./AboutUs";
 import ContactUs from "./ContactUs";
 
 function App() {
   const [user, setUser] = useState("");
+  
+
+
+
 
   // ***** On Clicking "Sign In" button, "onSubmit" function will occur
   const onSubmit = () => {
@@ -40,7 +45,9 @@ function App() {
       {user ? (
         <Homemainpage user={user} handleLogout={handleLogout} />
       ) : (
+        
         <Router>
+        
           {/* Navigation (Menu) Bar for Homelogin Page */}
           <Navbar
             collapseOnSelect
@@ -65,7 +72,7 @@ function App() {
                 <Link
                   to="/aboutus"
                   style={{
-                    color: "GrayText",
+                    color: "Black",
                     margin: "4px",
                     textDecoration: "none",
                   }}
@@ -75,7 +82,7 @@ function App() {
                 <Link
                   to="/contactus"
                   style={{
-                    color: "GrayText",
+                    color: "Black",
                     margin: "4px",
                     textDecoration: "none",
                   }}
@@ -84,24 +91,36 @@ function App() {
                 </Link>
               </Nav>
               <Nav>
-                <Button onClick={onSubmit}>SIGN IN</Button>
+                
               </Nav>
+              
+              <Nav>
+                <Button onClick={onSubmit}>SIGN IN WITH GOOGLE</Button>
+              </Nav>
+            
             </Navbar.Collapse>
           </Navbar>
-
+       
           {/* For changing page from "Homelogin" to "About Us, Contact Us" */}
+          
           <Switch>
+          
             <Route
               path="/"
               exact
               render={(props) => <Homelogin {...props} onSubmit={onSubmit} />}
             />
+           
             <Route path="/aboutus" component={AboutUs} />
+           
             <Route path="/contactus" component={ContactUs} />
+            
             <Route
               render={(props) => <Homelogin {...props} onSubmit={onSubmit} />}
             />
+
           </Switch>
+
         </Router>
       )}
     </>

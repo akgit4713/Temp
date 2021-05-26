@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useState,Component,useEffect } from "react";
 import { Button, Container, Row, Col, Modal } from "react-bootstrap";
 import cimage from "./Images/centerimg1.jpg";
-
+import Login from "./Login";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import fire from "./fire";
+import firebase from "firebase";  
+import Homemainpage from './Homemainpage'
 // LOGIN PAGE OF SOUNDRULE
 
 // ***** "MyVerticallyCenteredModal" is for "More About SoundRule". It will open in center.
 function MyVerticallyCenteredModal(props) {
+  
   return (
     <Modal
       {...props}
@@ -58,9 +63,87 @@ function MyVerticallyCenteredModal(props) {
 
 const Homelogin = (props) => {
   const [modalShow, setModalShow] = React.useState(false);
+  const [user, setUser] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [hasAccount, setHasAccount] = useState(false);
 
+  const clearInputs= () =>{
+    setEmail('');
+    setPassword('');
+  }
+  
+  const clearErrors= () =>{
+    setEmailError('');
+    setPasswordError('');
+  }
+
+  const handleLogIn= () =>{
+    clearErrors(); 
+    fire 
+      .auth()
+      .signInWithEmailAndPassword(email,password)
+      .catch(err=>{
+        switch(err.code){
+          case "auth/invalid-email":
+          case "auth/user-disabled":
+          case "auth/user-disabled":
+          case "auth/user-not-found":
+            setEmailError(err.message);
+            break;
+
+          case "auth/wrong-password":
+            setPasswordError(err.message);
+            break;
+        }
+      })
+    
+  }
+
+  const handleSignUp= () =>{
+    clearErrors();
+    fire 
+      .auth()
+      .createUserWithEmailAndPassword(email,password)
+      .catch(err=>{
+        switch(err.code){
+          case "auth/email-already-in-use":
+          case "auth/invalid-email":
+            setEmailError(err.message);
+            break;
+
+          case "auth/weak-password":
+            setPasswordError(err.message);
+            break;
+        }
+      })
+  }
+
+    const handleLogout = () => {
+    fire.auth().signOut();
+    setUser("");
+  };
+
+
+  const authListener= () =>{
+    fire.auth().onAuthStateChanged(user=>{
+      if(user){
+        clearInputs();
+        setUser(user);
+      }
+      else{
+        setUser("");
+      }
+    });
+  }
   return (
-    <>
+    
+      <div className="App">
+      { user?(
+        <Route path="/homepage" component={Homemainpage} />
+          ):(
       <div className="bg">
         <Container fluid className="mainBody">
           <h1 className="soundRule">
@@ -70,24 +153,40 @@ const Homelogin = (props) => {
           <Row>
             <Col xs sm={3} md={4}></Col>
             <Col xs={12} sm={6} md={4}>
-              <div className="loginBox">
-                <img style={{height:400,width:500}} src={cimage} alt="cimage" class="img-responsive" />
-                <br />
-              </div>
+              
+              <div>
+                <Login 
+                  email={email}
+                  setEmail={setEmail}
+                  password={password}
+                  setPassword={setPassword}
+                  handleLogIn={handleLogIn}
+                  handleSignUp={handleSignUp}
+                  hasAccount={hasAccount}
+                  setHasAccount={setHasAccount}
+                  emailError={emailError}
+                  passwordError={passwordError}
+                />
+
+          </div>
             </Col>
             <Col xs sm={3} md={4}></Col>
+           
           </Row>
           {/* Sign In Buttons */}
           <Row>
+          
             <Col xs lg={4}></Col>
-            <Col xs={12} lg={4} style={{ textAlign: "center" }}>
+            <Col  style={{ textAlign: "center" }}>
+            
               <Button
                 variant="warning"
                 onClick={props.onSubmit}
                 className="signInButton"
               >
-                SIGN IN
+                SIGN IN WITH GOOGLE
               </Button>
+              
               <Button
                 variant="warning"
                 onClick={() => setModalShow(true)}
@@ -105,7 +204,8 @@ const Homelogin = (props) => {
           </Row>
         </Container>
       </div>
-    </>
+      )}
+    </div>
   );
 };
 
