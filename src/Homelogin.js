@@ -85,6 +85,9 @@ const Homelogin = (props) => {
     fire 
       .auth()
       .signInWithEmailAndPassword(email,password)
+      .then(function (result) {
+        setUser(result.user);
+      })
       .catch(err=>{
         switch(err.code){
           case "auth/invalid-email":
@@ -99,6 +102,7 @@ const Homelogin = (props) => {
             break;
         }
       })
+     
     
   }
 
@@ -142,7 +146,7 @@ const Homelogin = (props) => {
     
       <div className="App">
       { user?(
-        <Route path="/homepage" component={Homemainpage} />
+        <Homemainpage user={user} handleLogout={handleLogout} />
           ):(
       <div className="bg">
         <Container fluid className="mainBody">

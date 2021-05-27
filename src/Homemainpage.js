@@ -13,7 +13,7 @@ import CategoryWiseVideo from "./CategoryWiseVideo";
 
 const Homemainpage = (props) => {
    const currUser = props.user;
-
+   const email = props.user.email;
   return (
     <>
       <Router>
@@ -57,8 +57,24 @@ const Homemainpage = (props) => {
               >
                 Contact Us
               </Link>
-            </Nav>
-            <Nav>
+               <Nav>
+              <Link to="/">
+                <Button variant="warning">
+                  LOG OUT
+                </Button>
+              </Link>
+
+              <Link
+                to="/user"
+                style={{
+                  color: "GrayText",
+                  margin: "4px",
+                  textDecoration: "none",
+                }}
+              >
+              qedwed
+              </Link>
+            </Nav> 
             
 
               <Link

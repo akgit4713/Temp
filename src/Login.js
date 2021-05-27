@@ -1,5 +1,6 @@
 import React from 'react';
 import Homemainpage from './Homemainpage';
+import Homelogin from './Homelogin';
 
 const Login= (props) =>{
 
@@ -42,7 +43,7 @@ const Login= (props) =>{
                 {hasAccount? (
                     <>
                         <button onClick={handleLogIn}>Sign In</button>
-                        <Homemainpage {...props}/>
+                       
                         <p>Don't have an account ? <button onClick={()=> setHasAccount(!hasAccount)}>Sign Up</button></p>
                     </>
                 ):(
@@ -51,6 +52,10 @@ const Login= (props) =>{
                     <p>Have an account ? <button  onClick={()=> setHasAccount(!hasAccount)}>Sign In</button></p>
                     </>
                 )}
+            </div>
+            <div>
+                Note: If you Sign In with Google, you will have both read and write access, else
+                you will only have read access.
             </div>
             </div>
             

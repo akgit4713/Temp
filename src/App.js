@@ -62,7 +62,7 @@ function App() {
                 width="70"
                 height="35"
                 className="d-inline-block align-top"
-                alt="SoundRule"
+                alt="SoundSplash"
               />
             </Link>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
